@@ -37,7 +37,8 @@ gem 'nokogiri', '>= 1.7'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # pry-byebugを入れるので、こっちはコメントアウトしておく
+  # gem 'byebug'
 end
 
 group :development do
@@ -46,5 +47,9 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # デバッグ用にbyebugを追加
+  gem 'pry-byebug'
+  gem 'pry-nav'
 end
 
