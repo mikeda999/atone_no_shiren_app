@@ -53,3 +53,11 @@ group :development do
   gem 'pry-nav'
 end
 
+group :test do
+  # RSpecでテストケースを書くために追加
+  gem 'capybara', '>= 2.15'
+  gem 'rspec-rails'
+  gem "factory_bot_rails"
+  gem 'faker'
+end
+
