@@ -22,5 +22,10 @@ module AtoneNoShirenApp
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # rails g コマンドで生成時に、testファイルが作成されないよう修正
+    config.generators do |g|
+      g.test_framework false
+     end
   end
 end
