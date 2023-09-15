@@ -1,0 +1,12 @@
+<h1>ポーカー</h1>
+<% if @result.present? && @result[:error].present? %>
+  <%= @result[:error] %>
+<% end%>
+
+<%= form_tag(cards_show_hand_path, method: :post) do %>
+  <%= label_tag :cards, 'カード' %>
+  <%= text_field_tag :cards %>
+  <%= submit_tag "スタート" %>
+<% end%>
+
+<%= @result[:hand_name] if @result.present? %>
