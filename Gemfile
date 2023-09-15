@@ -50,7 +50,6 @@ group :development do
 
   # デバッグ用にbyebugを追加
   gem 'pry-byebug'
-  gem 'pry-nav'
 end
 
 group :test do
