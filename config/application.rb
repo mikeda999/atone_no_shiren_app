@@ -27,5 +27,9 @@ module AtoneNoShirenApp
     config.generators do |g|
       g.test_framework false
      end
+
+    # Grapeのコンパイル用に追加
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
   end
 end
