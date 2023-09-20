@@ -155,12 +155,12 @@ RSpec.describe DeterminePokerHandService, type: :service do
       end
     end
 
-    # 渡されたカードのスートと数字が適切でない時、「渡されたカード情報が誤っています。もう一度、入力してください」というエラー、役名は空を返す
+    # 渡されたカードのスートと数字が適切でない時、「5番目のカード指定文字が不正です。（K2）」というエラーを返す、役名は空
     context 'when the suit and rank of the card passed is not appropriate' do
       let(:cards) { 'H2 C13 D1 C9 K2' }
 
       it 'returns "渡されたカード情報が誤っています。もう一度、入力してください"' do
-        expect(service.call[:error]).to eq '渡されたカード情報が誤っています。もう一度、入力してください'
+        expect(service.call[:error]).to eq '5番目のカード指定文字が不正です。（K2）'
       end
 
       it 'hand_name is blank' do
@@ -168,7 +168,7 @@ RSpec.describe DeterminePokerHandService, type: :service do
       end
     end
 
-    # カードのスートと数字の組み合わせが重複している時、「カードは重複せずに、入力してください」というエラー、役名は空を返す
+    # カードのスートと数字の組み合わせが重複している時、「カードは重複せずに、入力してください」というエラーを返す、役名は空
     context 'when there is a duplicate combination of suits and numbers on a card' do
       let(:cards) { 'H2 C13 D1 C9 H2' }
 
