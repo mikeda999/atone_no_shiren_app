@@ -15,18 +15,20 @@ class DeterminePokerHandService
   ONE_PEAR = 'ワンペア'.freeze
   HIGH_CARD = 'ハイカード'.freeze
 
-  # インスタンス化した時の初期処理
   def initialize(cards)
     # カードは半角空白で区切って5枚渡されるはずなので、半角空白で分けてハッシュ形式で持たせる
     @cards = cards.split(' ').map do |card|
-                if card.match(/([A-Z]+)(\d+)/).present?
-                  {suit: card.match(/([A-Z]+)(\d+)/)[1], rank: card.match(/([A-Z]+)(\d+)/)[2]}
+                if card.match(/([A-Za-z]+)(\d+)/).present?
+                  {suit: card.match(/([A-Za-z]+)(\d+)/)[1], rank: card.match(/([A-Za-z]+)(\d+)/)[2]}
+                else
+                  {suit: card, rank: ''}
                 end
-             end
+              end
   end
 
 
   def call
+    # 役の決定
     determine_poker_hand
   end
 
@@ -37,10 +39,12 @@ class DeterminePokerHandService
   # 上から順に強い
   def determine_poker_hand
     # カードが5枚あるか、重複しているカードはないか、正しいスートと数字の組み合わせかを判定
-    # 間違っていた場合は
-    # メモ：エラーハンドリングを考える
+    # 間違っていた場合はerrorを入れて、返却
     return {hand_name: '', error: 'カードは5枚で入力してください'} unless five_cards?
-    return {hand_name: '', error: '渡されたカード情報が誤っています。もう一度、入力してください' } unless correct_cards_set?
+    position_num, dis_correct_card = find_invalisd_cards
+    if position_num.present? && dis_correct_card.present?
+      return {hand_name: '', error: "#{position_num.join(',')}番目のカード指定文字が不正です。（#{dis_correct_card.join(',')}）" }
+    end
     return {hand_name: '', error: 'カードは重複せずに、入力してください' } unless unique_five_cards?
 
 
@@ -71,15 +75,23 @@ class DeterminePokerHandService
     @cards.compact.length == FIVE_CARDS
   end
 
-  # スートがS,H,D,Cのいずれか、数字が1-13のいずれかの組み合わせになっているかの判定
-  # 5枚全てのカードの組み合わせが正しい時true、それ以外はfalseを返す
-  def correct_cards_set?
-    @cards.map{ |card| CARD_SUITS.include?(card[:suit]) && card[:rank] =~ /^(1[0-3]|[1-9])$/ }.all?
-  end
-
   # カードのスートと数字の組み合わせが重複していないかの判定
   def unique_five_cards?
     @cards.map{ |card| (card[:suit] + card[:rank]) }.uniq.length == 5
+  end
+
+  # スートがS,H,D,Cのいずれか、数字が1-13のいずれかの組み合わせになっているかの判定
+  # 5枚のカードのうち、組み合わせが間違っているものがあれば位置情報とカード情報を配列で返す
+  def find_invalisd_cards
+    position_num = []
+    inappropriate_card = []
+    @cards.each_with_index do |card, index|
+      unless CARD_SUITS.include?(card[:suit]) && card[:rank] =~ /^(1[0-3]|[1-9])$/
+        position_num << index + 1
+        inappropriate_card << card[:suit] + card[:rank]
+      end
+    end
+    [position_num, inappropriate_card]
   end
 
 
