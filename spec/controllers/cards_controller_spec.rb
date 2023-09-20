@@ -31,15 +31,15 @@ RSpec.describe CardsController, type: :controller do
       expect(response).to have_http_status '200'
     end
 
-    # 正常なレスポンスが返ってくるか
+    # new actionにredirectする
     it 'responds successfully' do
       get :show_hand
-      expect(response).to be_success
+      expect(response).to redirect_to action: :new
     end
-    # 200レスポンスが返ってくるか
+    # 302レスポンスが返ってくる
     it 'returns a 200 response' do
       get :show_hand
-      expect(response).to have_http_status "200"
+      expect(response).to have_http_status "302"
     end
   end
 end
