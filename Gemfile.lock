@@ -144,7 +144,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
-    pg (0.21.0)
+    pg (0.15.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -262,7 +262,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   nokogiri (>= 1.7)
-  pg (~> 0.15)
+  pg (= 0.15)
   pry-byebug
   rails (>= 4.2, < 5.0.0)
   rspec-rails
