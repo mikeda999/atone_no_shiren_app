@@ -18,6 +18,20 @@ RSpec.describe DeterminePokerHandService, type: :service do
       end
     end
 
+    # ストレートフラッシュ([1, 10, 11, 12, 13])の時、「ストレートフラッシュ」、エラーは空と返す
+    # ストレートフラッシュ：同じスートで数字が連続する5枚のカード
+    context 'when give a straight flush' do
+      let(:cards) { 'H1 H13 H12 H11 H10' }
+
+      it 'returns "ストレートフラッシュ"' do
+        expect(service.call[:hand_name]).to eq DeterminePokerHandService::STRAIGHT_FLUSH
+      end
+
+      it 'error is blank' do
+        expect(service.call[:error]).to be_blank
+      end
+    end
+
     # フォー・オブ・ア・カインドの時、「フォー・オブ・ア・カインド」、エラーは空と返す
     # フォー・オブ・ア・カインド：同じ数字のカード4枚が含まれる
     context 'when give a four of a kind' do
