@@ -106,14 +106,14 @@ class DeterminePokerHandService
   # フォー・オブ・ア・カインドの判定
   # 同じ数字のカード4枚が含まれる
   def four_of_a_kind?
-    ranks = pluck_rank_from_card
+    ranks = select_rank_from_card
     same_rank?(ranks, 4)
   end
 
   # フルハウスの判定
   # 同じ数字のカード3枚と、別の同じ数字のカード2枚
   def full_house?
-    ranks = pluck_rank_from_card
+    ranks = select_rank_from_card
     same_rank?(ranks, 3) && same_rank?(ranks, 2)
   end
 
@@ -132,48 +132,47 @@ class DeterminePokerHandService
   # スリー・オブ・ア・カインドの判定
   # 同じ数字のカード3枚と異なる数字のカード2枚
   def three_of_a_kind?
-    ranks = pluck_rank_from_card
+    ranks = select_rank_from_card
     same_rank?(ranks, 3) && ranks.uniq.length == 3
   end
 
   # ツーペアの判定
   # 同じ数字のカード2枚組を2組と他のカード1枚
   def two_pear?
-    ranks = pluck_rank_from_card
+    ranks = select_rank_from_card
     same_rank?(ranks, 2) && ranks.uniq.length == 3
   end
 
   # ワンペアの判定
   # 同じ数字のカード2枚と異なる数字のカード3枚
   def one_pear?
-    ranks = pluck_rank_from_card
+    ranks = select_rank_from_card
     same_rank?(ranks, 2) && ranks.uniq.length == 4
   end
 
   # ----------------- 以下は、役に当てはまるかの判定のためのロジック -----------------
   # 全てのカードが同じスートかどうかを判定する
   def all_same_suit?
-    suits = pluck_suit_from_card
+    suits = select_suit_from_card
     suits.uniq.length == 1
   end
 
   # 連続する数字かどうかを判定する
   # カード数字順にソートして、最大値と最小値の差が4かつ配列に5つの異なる数字があるかどうか
+  # または手札が[1, 10, 11, 12, 13]かどうか
   def consecutive_rank?
-    ranks = pluck_rank_from_card.sort
-    (ranks.last.to_i - ranks.first.to_i) == 4 && ranks.uniq.length == 5
+    ranks = select_rank_from_card.map(&:to_i).sort
+    ranks == [1, 10, 11, 12, 13] || (ranks.last - ranks.first) == 4 && ranks.uniq.length == 5
   end
 
   # ----------------- 以下は、共通処理を切り出したもの -----------------
   # スートを配列として取り出す
-  # メモ：ここのメソッド名は要確認
-  def pluck_suit_from_card
+  def select_suit_from_card
     @cards.map { |card| card[:suit] }
   end
 
   # 数字(rank)を配列として取り出す
-  # メモ：ここのメソッド名は要確認
-  def pluck_rank_from_card
+  def select_rank_from_card
     @cards.map { |card| card[:rank] }
   end
 
