@@ -11,6 +11,7 @@ class CardsController < ApplicationController
     else
       begin
         @result = DeterminePokerHandService.new(params[:cards]).call
+        @card = params[:cards]
         render :new
       rescue => e
         # ログを残す
