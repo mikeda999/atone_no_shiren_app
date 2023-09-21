@@ -26,6 +26,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'nokogiri', '>= 1.7'
 
+# API用のgem
+gem 'grape'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -37,7 +40,8 @@ gem 'nokogiri', '>= 1.7'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  # pry-byebugを入れるので、こっちはコメントアウトしておく
+  # gem 'byebug'
 end
 
 group :development do
@@ -46,5 +50,16 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  # デバッグ用にbyebugを追加
+  gem 'pry-byebug'
+end
+
+group :test do
+  # RSpecでテストケースを書くために追加
+  gem 'capybara', '>= 2.15'
+  gem 'rspec-rails'
+  gem "factory_bot_rails"
+  gem 'faker'
 end
 

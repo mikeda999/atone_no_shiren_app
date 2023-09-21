@@ -1,0 +1,27 @@
+<div class='poker'>
+  <div class='container'>
+    <% if @result.present? && @result[:error].present? %>
+      <div class='alert alert-danger alert-dismissible' role='alert'>
+        <span><%= @result[:error] %></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% end%>
+    <h1>Check a Poker Hand</h1>
+    <div class='content'>
+      <div class='form-group row align-items-center'>
+        <br><small class='card-description form-text text-muted'>トランプカードを半角空白区切りで5枚入力してください</small>
+        <%= form_tag(cards_show_hand_path, method: :post) do %>
+          <div class='card-form'>
+            <%= text_field_tag :cards, '', {class: 'card-text-form', placeholder: 'S10 H10 D5 C10 H5', value: "#{@card}"} %>
+          </div>
+          <div class='start-btn'>
+            <%= submit_tag 'Check', class: 'btn btn-primary'%>
+          </div>
+        <% end %>
+      </div>
+      <div class='poker-hand'>
+        <span><%= @result[:hand_name] if @result.present? %></span>
+      </div>
+    </div>
+  </div>
+</div>
